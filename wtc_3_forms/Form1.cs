@@ -36,7 +36,7 @@ namespace wtc_3_forms
 			};
 			
 			
-			//richTextBox1.Text = c_PdfReader.readPdfDocument(@"C:\Users\WolfyD\Desktop\iris__1_130_HU_2018-08-01_2018-08-31.pdf");
+			rtb_TextValue.Text = c_PdfReader.readPdfDocument(@"C:\Users\WolfyD\Desktop\iris__1_130_HU_2018-08-01_2018-08-31.pdf");
 		}
 
 		private void btn_ChangePanels(object sender, EventArgs e)
