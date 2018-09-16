@@ -11,17 +11,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_xamarin.Android", "wt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_xamarin.iOS", "wtc_3_xamarin\wtc_3_xamarin.iOS\wtc_3_xamarin.iOS.csproj", "{70ED5535-D4E1-4782-83A1-9A78B2026922}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_xamarin.MobileAppService", "wtc_3_xamarin\wtc_3_xamarin.MobileAppService\wtc_3_xamarin.MobileAppService.csproj", "{19B25052-E7CE-4CE0-9E2F-149098A37844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wtc_3_xamarin.MobileAppService", "wtc_3_xamarin\wtc_3_xamarin.MobileAppService\wtc_3_xamarin.MobileAppService.csproj", "{19B25052-E7CE-4CE0-9E2F-149098A37844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_xamarin", "wtc_3_xamarin\wtc_3_xamarin\wtc_3_xamarin.csproj", "{80DA8B6C-5728-40D7-9951-E179F9611849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wtc_3_xamarin", "wtc_3_xamarin\wtc_3_xamarin\wtc_3_xamarin.csproj", "{80DA8B6C-5728-40D7-9951-E179F9611849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_console_core", "wtc_3_console_core\wtc_3_console_core.csproj", "{B11B6226-82BC-4D3A-8300-3F715B0E55B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wtc_3_console_core", "wtc_3_console_core\wtc_3_console_core.csproj", "{B11B6226-82BC-4D3A-8300-3F715B0E55B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_console_windows", "wtc_3_console_windows\wtc_3_console_windows.csproj", "{A09A17DA-70B2-46DE-921E-2A66788CE94A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "wtc_3_console_f_windows", "wtc_3_console_f_windows\wtc_3_console_f_windows.fsproj", "{3AF1BD5D-EA7F-43E7-84C8-6784C2419881}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "wtc_3_console_f_core", "wtc_3_console_f_core\wtc_3_console_f_core.fsproj", "{56A79A09-8115-4988-987A-4D6817D58B9C}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "wtc_3_console_f_core", "wtc_3_console_f_core\wtc_3_console_f_core.fsproj", "{56A79A09-8115-4988-987A-4D6817D58B9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wtc_3_classes", "wtc_3_classes\wtc_3_classes.csproj", "{458A1A45-9B9E-47B1-AEC4-79D742A4E3B5}"
 EndProject

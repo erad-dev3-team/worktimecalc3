@@ -15,9 +15,11 @@ namespace wtc_3_console_windows
 		public static cursor_pos cp = new cursor_pos();
 		public static Thread t = new Thread(() => loadData());
 		public static bool insert = false;
-
+		
 		static void Main(string[] args)
 		{
+			//cursor_pos.ReadConsoleInput(cursor_pos.ConsoleHandle,);
+
 			tim.Interval = 500;
 			tim.Tick += Tim_Tick;
 			Semaphore s = new Semaphore(0, 10);
@@ -48,7 +50,7 @@ namespace wtc_3_console_windows
 			{
 				insert = true;
 				tim.Start();
-				
+				k = Console.ReadKey();
 				s += k.KeyChar;
 			}
 

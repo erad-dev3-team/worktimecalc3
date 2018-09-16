@@ -7,13 +7,7 @@ using System.Drawing;
 
 namespace wtc_3_classes.console
 {
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct ConsoleFont
-	{
-		public uint Index;
-		public short SizeX, SizeY;
-	}
-
+	
 	public static class console_helper
 	{
 		[DllImport("kernel32")]
@@ -64,6 +58,13 @@ namespace wtc_3_classes.console
 					GetConsoleFontInfo(GetStdHandle(StdHandle.OutputHandle), false, (uint)fonts.Length, fonts);
 				return fonts;
 			}
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		public struct ConsoleFont
+		{
+			public uint Index;
+			public short SizeX, SizeY;
 		}
 
 	}
