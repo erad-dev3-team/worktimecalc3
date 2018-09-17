@@ -44,14 +44,22 @@ namespace wtc_3_forms
 
 		public void test()
 		{
-			c_File cf = new c_File() { FilePath = @"C:\Users\WolfyD\Desktop\iris__1_130_HU_2018-08-01_2018-08-31.pdf" };
+			c_File cf = new c_File() { FilePath = @"test\iris.pdf" };
 			cf.initializeFile();
+			Console.WriteLine("|---" + cf.FileTextContents);
 			Console.WriteLine(cf.ToString());
 
 
-			c_File cf1 = new c_File() { FilePath = @"C:\Users\WolfyD\Desktop\headers\List of file formats - Wikipedia.htm" };
+			c_File cf1 = new c_File() { FilePath = @"test\iris.txt" };
 			cf1.initializeFile();
+			Console.WriteLine("|---" + cf1.FileTextContents);
 			Console.WriteLine(cf1.ToString());
+
+
+			c_File cf2 = new c_File() { FilePath = @"test\iris.rtf" };
+			cf2.initializeFile();
+			Console.WriteLine("|---" + cf2.FileTextContents);
+			Console.WriteLine(cf2.ToString());
 		}
 
 		private void btn_ChangePanels(object sender, EventArgs e)

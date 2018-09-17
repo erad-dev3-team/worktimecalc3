@@ -24,7 +24,6 @@ namespace wtc_3_forms
 		public void fileCretaed()
 		{
 			FileInfo fi = new FileInfo(_filePath);
-			//fi.OpenRead();
 			FileExtension = fi.Extension.ToLower();
 			FileName = fi.Name;
 			FileSize = fi.Length;
@@ -36,10 +35,14 @@ namespace wtc_3_forms
 
 			try
 			{
-				if (FileExtension == ".pdf") { FileTextContents = c_PdfReader.readPdfDocument(FilePath); }
-				else if (FileExtension == ".txt") { FileTextContents = File.ReadAllText(FilePath); }
-				else if (FileExtension == ".rtf") { FileTextContents = RtfToText(FilePath); }
-				else if (FileExtension == ".html" || FileExtension == ".htm") { FileTextContents = htmlToText(FilePath); }
+				if (FileExtension == ".pdf")	{ FileTextContents = c_PdfReader.readPdfDocument(FilePath); }
+				else 
+				if (FileExtension == ".txt")	{ FileTextContents = File.ReadAllText(FilePath);			}
+				else 
+				if (FileExtension == ".rtf")	{ FileTextContents = RtfToText(FilePath);					}
+				else 
+				if (FileExtension == ".html" || 
+					FileExtension == ".htm")	{ FileTextContents = htmlToText(FilePath);					}
 			}
 			catch(Exception ex) { Console.Error.WriteLine(ex); return false; }
 			return true;
@@ -57,7 +60,7 @@ namespace wtc_3_forms
 				byte[] outBuffer = new byte[tb64.OutputBlockSize];
 				using (MemoryStream outputFileStream = new MemoryStream(outBuffer))
 				{
-					using (FileStream inputFileStream = new FileStream(@"C:\Users\WolfyD\Desktop\iris__1_130_HU_2018-08-01_2018-08-31.pdf", FileMode.Open, FileAccess.Read))
+					using (FileStream inputFileStream = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
 					{
 						int ibs = tb64.InputBlockSize;
 						byte[] outputBytes = new byte[tb64.OutputBlockSize];
