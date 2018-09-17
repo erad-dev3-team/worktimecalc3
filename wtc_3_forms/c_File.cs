@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,18 +10,24 @@ using System.Windows.Forms;
 
 namespace wtc_3_forms
 {
-	internal class c_File
+	public class c_File
 	{
-		private string	_filePath			{ get; set; }
-		public string	FilePath			{ get { return _filePath; } set { _filePath = value; fileCretaed(); } }
+		public fileType		FileType			{ get; set; } = fileType.NONE;
 
-		public string	FileExtension		{ get; set; }
-		public string	FileName			{ get; set; }
-		public long		FileSize			{ get; set; }
+		private string		_filePath			{ get; set; }
+		public string		FilePath			{ get { return _filePath; } set { _filePath = value; fileCretaed(); } }
 
-		public string	FileTextContents	{ get; set; } = "";
-		public string	FileOriginalDataB64 { get; set; } = "";
-		public string	FileMD5Checksum		{ get; set; } = "";
+		public string		FileExtension		{ get; set; }
+		public string		FileName			{ get; set; }
+		public long			FileSize			{ get; set; }
+
+		public string		FileTextContents	{ get; set; } = "";
+		public string		FileOriginalDataB64 { get; set; } = "";
+		public string		FileMD5Checksum		{ get; set; } = "";
+
+		public fileRegex	Regex				{ get; set; } = fileRegex.NONE;
+		public string		CustomRegex			{ get; set; } = "";
+
 
 		public void fileCretaed()
 		{
@@ -35,14 +43,15 @@ namespace wtc_3_forms
 
 			try
 			{
-				if (FileExtension == ".pdf")	{ FileTextContents = c_PdfReader.readPdfDocument(FilePath); }
+				if (FileExtension == ".pdf")	{ FileTextContents = c_PdfReader.readPdfDocument(FilePath); FileType = fileType.PDF;	if (Regex == fileRegex.NONE) { Regex = fileRegex.PDF;	}	}
 				else 
-				if (FileExtension == ".txt")	{ FileTextContents = File.ReadAllText(FilePath);			}
+				if (FileExtension == ".txt")	{ FileTextContents = File.ReadAllText(FilePath);			FileType = fileType.TXT;	if (Regex == fileRegex.NONE) { Regex = fileRegex.TXT;	}	}
 				else 
-				if (FileExtension == ".rtf")	{ FileTextContents = RtfToText(FilePath);					}
+				if (FileExtension == ".rtf")	{ FileTextContents = RtfToText(FilePath);					FileType = fileType.RTF;	if (Regex == fileRegex.NONE) { Regex = fileRegex.TXT;	}	}
 				else 
 				if (FileExtension == ".html" || 
-					FileExtension == ".htm")	{ FileTextContents = htmlToText(FilePath);					}
+					FileExtension == ".htm")	{ FileTextContents = htmlToText(FilePath);					FileType = fileType.HTML;	if (Regex == fileRegex.NONE) { Regex = fileRegex.HTML;	}	}
+				else							{ FileTextContents = File.ReadAllText(FilePath);			FileType = fileType.OTHER;	if (Regex == fileRegex.NONE) { Regex = fileRegex.BASIC;	}	}
 			}
 			catch(Exception ex) { Console.Error.WriteLine(ex); return false; }
 			return true;
@@ -158,8 +167,157 @@ namespace wtc_3_forms
 
 		new public string ToString()
 		{
-			
-			return $"{FilePath} \r\n {FileName} \r\n {FileExtension} \r\n {FileSize} \r\n {FileTextContents.Substring(0, FileTextContents.Length > 20 ? 20 : FileTextContents.Length) + "..."} \r\n {FileOriginalDataB64.Substring(0, FileOriginalDataB64.Length > 20 ? 20 : FileOriginalDataB64.Length) + "..."} \r\n {FileMD5Checksum}";
+			return "{ \"FileName\":\"" + FileName + "\", \"FileType\":\"" + FileType + "\", \"FileSize\":\"" + FileSize + "b\", \"FilePath\":\"" + FilePath.Replace(@"\",@"\\") + "\" }";
 		}
+
+		public string ToFullString()
+		{
+
+			TypeInfo cFile = typeof(c_File).GetTypeInfo();
+			IEnumerable<PropertyInfo> declaredProperties = cFile.DeclaredProperties;
+			IEnumerable<MethodInfo> declaredMethods = cFile.DeclaredMethods;			
+
+			return $"----------------------------------------------------------------- \r\n| {"FilePath:".PadRight(30, '.')}{FilePath} \r\n| {"FileName:".PadRight(30, '.')}{FileName} \r\n| {"Regex:".PadRight(30, '.')}{Regex} \r\n| {(Regex == fileRegex.CUSTOM ? $"{"CustomRegex:".PadRight(30, '.') + CustomRegex} \r\n|" : "")} {"FileExtension:".PadRight(30, '.')}{FileExtension} \r\n| {"FileSize:".PadRight(30, '.')}{FileSize}b (~{((float)FileSize / 1024)}kb) \r\n| {"FileTextContents:".PadRight(30, '.')}{FileTextContents.Substring(0, FileTextContents.Length > 20 ? 20 : FileTextContents.Length) + "..."} \r\n| {"FileOriginalDataB64:".PadRight(30, '.')}{FileOriginalDataB64.Substring(0, FileOriginalDataB64.Length > 20 ? 20 : FileOriginalDataB64.Length) + "..."} \r\n| {"FileMD5Checksum:".PadRight(30, '.')}{FileMD5Checksum} \r\n-----------------------------------------------------------------";
+		}
+	}
+
+	public class FileContainer : List<c_File>, IEnumerable<c_File>
+	{
+		
+		private List<c_File> Files = new List<c_File>();
+
+		public List<c_File> getAllOfType(fileType ft)
+		{
+			List<c_File> fileList = (from f in Files where f.FileType == ft select f).ToList();
+			return fileList;
+		}
+
+		public List<c_File> popAllOfType(fileType ft)
+		{
+			List<c_File> fils = new List<c_File>();
+			fils = (from f in Files where f.FileType == ft select f).ToList();
+			foreach(c_File ff in fils)
+			{
+				Files.Remove(ff);
+			}
+
+			return fils;
+		}
+
+		public FileContainer()
+		{
+			Files = new List<c_File>();
+		}
+
+		public FileContainer(int capacity)
+		{
+			if (capacity < 0)
+				 return;
+			if (capacity == 0)
+				this.Files = default(List<c_File>);
+			else
+				this.Files = new List<c_File>(capacity);
+		}
+
+		public IEnumerable<c_File> getFileList()
+		{
+			return Files;
+		}
+
+		new public void Add(c_File file)
+		{
+			Files.Add(file);
+#region DEBUG
+#if DEBUG
+			Console.WriteLine(file.ToString());
+#endif
+#endregion
+		}
+
+		/// <summary>
+		/// <para>Pops last element off and returns it</para>
+		/// <para>LIFO style. EG: [A,B,C] -PoP-> [A,B] C</para>
+		/// </summary>
+		public c_File pop()
+		{
+			c_File v = null;
+
+			try
+			{
+				if (Files.Count > 0)
+				{
+					v = Files[Files.Count];
+					Files.Remove(Files[Files.Count]);
+				}
+			}
+			catch(Exception ex){ Console.WriteLine(ex); }
+
+			return v;
+		}
+
+		/// <summary>
+		/// <para>Pushes new element to List</para>
+		/// <para>EG: [A,B] -Push-C-> [A,B,C]</para>
+		/// </summary>
+		public bool push(c_File file)
+		{
+			try
+			{
+				Files.Add(file);
+#region DEBUG
+#if DEBUG
+				Console.WriteLine(file.ToString());
+#endif
+#endregion
+				return true;
+			}
+			catch(Exception ex)
+			{
+				Console.WriteLine(ex);
+				return false;
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return base.ToString();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		public override bool Equals(object obj)
+		{
+			return base.Equals(obj);
+		}
+	}
+
+	public enum fileType
+	{
+		PDF,
+		TXT,
+		RTF,
+		HTML,
+		OTHER,
+		NONE
+	}
+
+	public enum fileRegex
+	{
+		BASIC,		//SUPER BASIC, just tries and gets dates and times of working days
+		PDF,		//General PDF regex, tailored to the shitty PDF we generate
+		TXT,		//General string regex, tailored to when someone copies out the text from a generic reader
+		TXT2,       //Better string regex, tailored to when someone copies out the text from adobe reader
+		HTML,		//Experimental, in case there's html generated table instead of pdf
+		HEURISTIC,	//Experimental, same as basic but attempts to find the pattern of the data and generate regex tailored to that
+		CUSTOM,		//Custom in case user writes their own regex they want to custom use
+		NONE		//Fuck this shit, i'm out...
 	}
 }

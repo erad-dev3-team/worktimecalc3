@@ -1,0 +1,59 @@
+E-Radius Kft. Jelenléti ív
+Fizetési idoszak:
+Alkalmazott:
+Felettes:
+Nap Munkaórák
+száma
+Túlóra
+(óra)
+Betegszabadság
+(nap)
+Radics Márton
+2018-08-01 2018-08-31
+Szabadság
+(nap)
+-
+Készenlét
+(óra)
+Burián Imre
+Home Office
+(nap)
+Kiküldetés
+(nap)
+Szerda 2018-08-01 08:00 - 16:30 8 Normal
+Csütörtök 2018-08-02 07:14 - 15:49 8
+Péntek 2018-08-03 07:42 - 16:09 8
+Szombat 2018-08-04 true
+Vasárnap 2018-08-05 true
+Hétfo 2018-08-06 07:24 - 16:10 8
+Kedd 2018-08-07 06:23 - 17:46 8
+Szerda 2018-08-08 06:15 - 14:43 8
+Csütörtök 2018-08-09 06:30 - 15:28 8
+Péntek 2018-08-10 06:11 - 13:04 8
+Szombat 2018-08-11 true
+Vasárnap 2018-08-12 true
+Hétfo 2018-08-13 07:07 - 16:11 8
+Kedd 2018-08-14 07:20 - 16:05 8
+Szerda 2018-08-15 08:00 - 16:30 8 Normal
+Csütörtök 2018-08-16 07:17 - 18:11 8
+Péntek 2018-08-17 07:39 - 17:05 8
+Szombat 2018-08-18 true
+Vasárnap 2018-08-19 true
+Hétfo 2018-08-20 true
+Kedd 2018-08-21 07:06 - 16:30 8
+Szerda 2018-08-22 05:47 - 15:44 8
+Csütörtök 2018-08-23 09:58 - 17:58 8
+Péntek 2018-08-24 07:13 - 14:10 8
+Szombat 2018-08-25 true
+Vasárnap 2018-08-26 true
+Hétfo 2018-08-27 07:35 - 15:38 8
+Kedd 2018-08-28 07:40 - 16:20 8
+Szerda 2018-08-29 07:41 - 16:07 8
+Csütörtök 2018-08-30 07:25 - 17:52 8
+Péntek 2018-08-31 07:37 - 16:03 8
+Összesen 176
+Alkalmazott aláírása Dátum
+Felettes aláírása Dátum
+2018.09.14
+2018.09.14
+00:00 2 0
