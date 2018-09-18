@@ -117,8 +117,16 @@ namespace wtc_3_forms
 						{
 							if (exts.Contains(c_Utilities.getExtension(s))){ files.Add(s); }
 						}
-						
-						if(files.Count > 0) { fc.AddRange(c_Utilities.handleFiles(files)); }
+
+						if (files.Count > 0)
+						{
+							foreach (var f in c_Utilities.handleFiles(files))
+							{
+								fc.Add(f);
+							}
+						}
+						fc.makeUnique();
+						handleTexts();
 					}
 				}
 				else if (c)
@@ -131,5 +139,23 @@ namespace wtc_3_forms
 				}
 			}
 		}
+
+		public void handleTexts()
+		{
+			foreach(var v in fc)
+			{
+				ToolStripDropDownButton btn = new ToolStripDropDownButton();
+				btn.Text = v.FileName;
+				btn.Tag = v;
+				btn.Click += (sender, args) => btnClick(v, rtb_TextValue);
+				cms_Menu.Items.Add(btn);
+			}
+		}
+		
+		public void btnClick(c_File file, RichTextBox rtb)
+		{
+			rtb.Text = file.FileTextContents;
+		}
+
 	}
 }
