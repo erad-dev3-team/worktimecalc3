@@ -141,15 +141,19 @@ namespace wtc_3_forms
 
 		public string RtfToText(string path)
 		{
-			RichTextBox rtb = new RichTextBox();
-			rtb.Rtf = File.ReadAllText(path);
+			RichTextBox rtb = new RichTextBox
+			{
+				Rtf = File.ReadAllText(path)
+			};
 			return rtb.Text;
 		}
 
 		public string htmlToText(string path)
 		{
-			WebBrowser wb = new WebBrowser();
-			wb.ScriptErrorsSuppressed = true;
+			WebBrowser wb = new WebBrowser
+			{
+				ScriptErrorsSuppressed = true
+			};
 			wb.Navigate("about:blank");
 
 			wb.Document.Write(File.ReadAllText(path));

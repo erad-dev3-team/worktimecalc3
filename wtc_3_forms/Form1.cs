@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 
-
 namespace wtc_3_forms
 {
 	public partial class Form1 : Form
@@ -44,6 +43,20 @@ namespace wtc_3_forms
 				p_Save,
 				p_Settings
 			};
+			
+
+			cms_Menu.ItemAdded += Cms_Menu_ItemAdded;
+			cms_Menu.ItemRemoved += Cms_Menu_ItemRemoved;
+		}
+
+		private void Cms_Menu_ItemRemoved(object sender, ToolStripItemEventArgs e)
+		{
+			if (cms_Menu.Items.Count == 0 && btn_TS_DropDown_Texts.Enabled) { btn_TS_DropDown_Texts.Enabled = false; }
+		}
+
+		private void Cms_Menu_ItemAdded(object sender, ToolStripItemEventArgs e)
+		{
+			if(cms_Menu.Items.Count > 0 && !btn_TS_DropDown_Texts.Enabled) { btn_TS_DropDown_Texts.Enabled = true; }
 		}
 
 		public void test()
@@ -81,6 +94,8 @@ namespace wtc_3_forms
 			Console.WriteLine(cf3.ToFullString());
 		}
 
+#region DRAGDROP
+
 		private void btn_ChangePanels(object sender, EventArgs e)
 		{
 			string s = (sender as ToolStripButton).Tag.ToString().Split(';')[0];
@@ -94,28 +109,64 @@ namespace wtc_3_forms
 			else { e.Effect = DragDropEffects.None; }
 		}
 
-		private void Form1_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+		private void Form1_DragOver(object sender, DragEventArgs e)
 		{
-			if (e.EscapePressed) { e.Action = DragAction.Cancel; }
+			if (Bounds.Contains(e.X, e.Y))
+			{
+				showDragPanel();
+			}
+		}
+
+		private void Form1_DragLeave(object sender, EventArgs e)
+		{
+			if (!Bounds.Contains(MousePosition.X, MousePosition.Y))
+			{
+				hideDragPanel();
+			}
+		}
+
+		public void showDragPanel()
+		{
+			p_FileDrag.Dock = DockStyle.Fill;
+			p_FileDrag.BringToFront();
+			p_FileDrag.Show();
+		}
+
+		public void hideDragPanel()
+		{
+			p_FileDrag.Hide();
+			p_FileDrag.Dock = DockStyle.None;
+			p_FileDrag.SendToBack();
+		}
+
+		private void p_FileDrag_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+		{
+			hideDragPanel();
+			OnDragLeave(new EventArgs());
 		}
 
 		private void Form1_DragDrop(object sender, DragEventArgs e)
 		{
+			handleDragDrop(e);
+		}
+
+		public void handleDragDrop(DragEventArgs e)
+		{
+			hideDragPanel();
 			if (e.AllowedEffect != DragDropEffects.None)
 			{
 				var b = e.Data.GetDataPresent(DataFormats.FileDrop, false);
 				var c = e.Data.GetDataPresent(DataFormats.Text, false);
-				
+
 				List<string> files = new List<string>();
 
 				if (b)
 				{
-					string[] v = e.Data.GetData(DataFormats.FileDrop, false) as string[];
-					if (v != null)
+					if (e.Data.GetData(DataFormats.FileDrop, false) is string[] v)
 					{
 						foreach (string s in v)
 						{
-							if (exts.Contains(c_Utilities.getExtension(s))){ files.Add(s); }
+							if (exts.Contains(c_Utilities.getExtension(s))) { files.Add(s); }
 						}
 
 						if (files.Count > 0)
@@ -140,13 +191,19 @@ namespace wtc_3_forms
 			}
 		}
 
+#endregion
+
 		public void handleTexts()
 		{
 			foreach(var v in fc)
 			{
-				ToolStripDropDownButton btn = new ToolStripDropDownButton();
-				btn.Text = v.FileName;
-				btn.Tag = v;
+				ToolStripMenuItem btn = new ToolStripMenuItem
+				{
+					Text = v.FileName,
+					Tag = v,
+					Width = 150
+				};
+
 				btn.Click += (sender, args) => btnClick(v, rtb_TextValue);
 				cms_Menu.Items.Add(btn);
 			}
@@ -157,5 +214,12 @@ namespace wtc_3_forms
 			rtb.Text = file.FileTextContents;
 		}
 
+		private void Form1_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+			{
+				p_FileDrag_GiveFeedback(sender, new GiveFeedbackEventArgs(DragDropEffects.None, false));
+			}
+		}
 	}
 }
